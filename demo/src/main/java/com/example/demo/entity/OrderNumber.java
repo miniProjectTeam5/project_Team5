@@ -1,4 +1,4 @@
-package com.example.demo.Entity;
+package com.example.demo.entity;
 
 
 import lombok.Getter;
@@ -8,8 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Order extends OrderNumber {
-
-
-
+public class OrderNumber {
 }
