@@ -1,7 +1,7 @@
-package com.example.demo.Service;
+package com.example.demo.service;
 
-import com.example.demo.Entity.OrderNumber;
-import com.example.demo.Repository.OrderNumberRepository;
+import com.example.demo.entity.OrderNumber;
+import com.example.demo.repository.OrderNumberRepository;
 import com.example.demo.dto.OrderNumberDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
