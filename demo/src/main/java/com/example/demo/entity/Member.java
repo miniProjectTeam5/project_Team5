@@ -1,8 +1,10 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Member extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,4 +18,10 @@ public class Member extends Timestamped {
 
     @Column(nullable = false)
     private boolean responseSMS;
+
+    public Member(){
+        this.phoneNumber = getPhoneNumber();
+        this.mileage = getMileage();
+        this.responseSMS = isResponseSMS();
+    }
 }
