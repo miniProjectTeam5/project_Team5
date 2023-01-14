@@ -1,4 +1,4 @@
-package com.example.demo.Entity;
+package com.example.demo.dto;
 
 
 import lombok.Getter;
@@ -8,8 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Order extends OrderNumber {
+public class OrderRequestDto {
 
+    Long orderId;
 
 
 }

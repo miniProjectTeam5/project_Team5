@@ -13,7 +13,7 @@ public class OrderNumberDto {
     Long orderId;
     Long oderNumber;
 
-    Long Order(Long orderId){
+    public Long Order(Long orderId){
         return this.oderNumber;
     }
 
