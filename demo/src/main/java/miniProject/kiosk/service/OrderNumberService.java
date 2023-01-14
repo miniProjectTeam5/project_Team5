@@ -1,4 +1,3 @@
-/*
 package miniProject.kiosk.service;
 
 import miniProject.kiosk.entity.OrderNumber;
@@ -24,4 +23,3 @@ public class OrderNumberService {
     }
 
 }
-*/
