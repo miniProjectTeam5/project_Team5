@@ -26,4 +26,5 @@ public class Member extends Timestamped {
         this.mileage = mileage;
         this.responseSMS = responseSMS;
     }
+
 }
