@@ -21,10 +21,14 @@ public class Member extends Timestamped {
     @Column(nullable = false)
     private Boolean responseSMS;
 
-    public Member(String phoneNumber, Integer mileage, Boolean responseSMS){
+    @Enumerated(value = EnumType.STRING)
+    private MemberRoleEnum role;
+
+    public Member(String phoneNumber, Integer mileage, Boolean responseSMS, MemberRoleEnum role){
         this.phoneNumber = phoneNumber;
         this.mileage = mileage;
         this.responseSMS = responseSMS;
+        this.role = role;
     }
 
 }
