@@ -1,9 +1,8 @@
-package com.example.demo.service;
+package miniProject.kiosk.service;
 
-import com.example.demo.dto.member.MemberJoinRequestDto;
-import com.example.demo.entity.Member;
-import com.example.demo.repository.MemberRepository;
-import jakarta.servlet.http.HttpServletRequest;
+import miniProject.kiosk.dto.member.MemberJoinRequestDto;
+import miniProject.kiosk.entity.Member;
+import miniProject.kiosk.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

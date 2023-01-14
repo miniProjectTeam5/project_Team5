@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package miniProject.kiosk.repository;
 
-import com.example.demo.entity.Member;
+import miniProject.kiosk.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
