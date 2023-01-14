@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package miniProject.kiosk.dto;
 
 
 import lombok.Getter;

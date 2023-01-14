@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package miniProject.kiosk.repository;
 
-import com.example.demo.entity.Order;
+import miniProject.kiosk.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

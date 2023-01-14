@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package miniProject.kiosk.dto;
 
 
 import lombok.Getter;
@@ -8,8 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Order extends OrderNumber {
+public class OrderRequestDto {
 
-
-
+    Long orderId;
 }

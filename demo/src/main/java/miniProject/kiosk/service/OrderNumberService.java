@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package miniProject.kiosk.service;
 
-import com.example.demo.entity.OrderNumber;
-import com.example.demo.repository.OrderNumberRepository;
-import com.example.demo.dto.OrderNumberDto;
+import miniProject.kiosk.entity.OrderNumber;
+import miniProject.kiosk.repository.OrderNumberRepository;
+import miniProject.kiosk.dto.OrderNumberDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
