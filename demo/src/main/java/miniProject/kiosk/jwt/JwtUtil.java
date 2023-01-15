@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Date;
 
@@ -54,7 +56,9 @@ public class JwtUtil {
                 Jwts.builder()
                         .setSubject(phoneNumber)
                         .claim(AUTHORIZATION_KEY, role)
+                        .claim("time", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/hh/mm")))
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
+                        //이거를 가져가자!!
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
                         .compact();

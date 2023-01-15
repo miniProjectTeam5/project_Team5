@@ -11,8 +11,8 @@ public class OrderRequestMsgDto {
     private String msg;
     private Integer httpStatus;
 
-//    public OrderRequestMsgDto(String msg, Integer httpStatus) {
-//        this.msg = msg;
-//        this.httpStatus = httpStatus;
-//    }
+    public OrderRequestMsgDto(String msg, Integer httpStatus) {
+        this.msg = msg;
+        this.httpStatus = httpStatus;
+    }
 }

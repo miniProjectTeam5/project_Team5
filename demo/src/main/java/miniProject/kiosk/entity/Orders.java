@@ -1,10 +1,9 @@
 package miniProject.kiosk.entity;
 
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import miniProject.kiosk.dto.OrderRequestDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Menu {
+public class Orders extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,8 +22,10 @@ public class Menu {
     private String menuName;
 
     @Column(nullable = false)
-    private Integer price;
+    private Integer amount;
 
-    @OneToMany(mappedBy = "menu")
-    List<Orders> orders = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
+
 }
