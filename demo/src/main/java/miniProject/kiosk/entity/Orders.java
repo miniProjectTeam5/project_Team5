@@ -1,13 +1,13 @@
 //package miniProject.kiosk.entity;
 //
 //
-//import jakarta.persistence.Entity;
 //import lombok.Getter;
 //import lombok.NoArgsConstructor;
 //import lombok.Setter;
 //
 //@Getter
-//@Entity
+//@Setter
 //@NoArgsConstructor
-//public class OrderNumber {
+//public class Order extends OrderNumber {
+//
 //}
