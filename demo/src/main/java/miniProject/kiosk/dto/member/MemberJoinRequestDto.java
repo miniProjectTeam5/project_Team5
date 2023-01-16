@@ -8,5 +8,5 @@ public class MemberJoinRequestDto {
 
     private Integer mileage;
 
-    private boolean responseSMS;
+    private Boolean smsAgreement;
 }
