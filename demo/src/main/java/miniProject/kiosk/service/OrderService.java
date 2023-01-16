@@ -92,6 +92,7 @@ public class OrderService {
         Menu tempMenu = Menu.builder()
                 .menuName(menu.getMenuName())
                 .price(menu.getPrice())
+                .imageUrl(menu.getImageUrl())
                 .build();
         menuRepository.save(tempMenu);
         return tempMenu;
