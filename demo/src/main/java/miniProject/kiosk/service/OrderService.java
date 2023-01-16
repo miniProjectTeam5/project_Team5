@@ -44,7 +44,7 @@ public class OrderService {
                 throw new IllegalArgumentException("주문 신청에 오류가 있습니다.");
             }
 
-            String time = (String) claims.get("");
+            String time = (String) claims.get("time");
             log.info("시간정보입니다 " + time);
 
             List<Orders> targetOrders = orderRepository.findAllByCreatedAt(time);
