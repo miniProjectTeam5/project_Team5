@@ -27,4 +27,9 @@ public class Menu {
 
     @OneToMany(mappedBy = "menu")
     List<Orders> orders = new ArrayList<>();
+
+    public Menu(String menuName, Integer price){
+        this.menuName = menuName;
+        this.price = price;
+    }
 }
