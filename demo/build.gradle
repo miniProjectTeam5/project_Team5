@@ -26,6 +26,8 @@ dependencies {
 //    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
 
+    implementation 'mysql:mysql-connector-java' // MySql
+
     //롬복
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
