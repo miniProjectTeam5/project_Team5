@@ -12,6 +12,7 @@ import miniProject.kiosk.entity.MemberRoleEnum;
 import miniProject.kiosk.entity.Menu;
 import miniProject.kiosk.entity.Orders;
 import miniProject.kiosk.jwt.JwtUtil;
+import miniProject.kiosk.repository.MemberRepository;
 import miniProject.kiosk.repository.MenuRepository;
 import miniProject.kiosk.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class OrderService {
     private final JwtUtil jwtUtil;
     private final OrderRepository orderRepository;
     private final MenuRepository menuRepository;
+    private final MemberRepository memberRepository;
 
     public OrderRequestMsgDto totalPayment(HttpServletRequest request) {
 

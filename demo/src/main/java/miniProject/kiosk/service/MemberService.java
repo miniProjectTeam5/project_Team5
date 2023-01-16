@@ -22,16 +22,20 @@ public class MemberService {
     @Transactional
     public void joinMember(MemberJoinRequestDto requestDto){
         String phoneNumber = requestDto.getPhoneNumber();
-        Integer mileage = requestDto.getMileage();
-        Boolean responseSMS = requestDto.isResponseSMS();
+        Integer point = 0;
+        Boolean smsAgreement = requestDto.getSmsAgreement();
 
         MemberRoleEnum role = MemberRoleEnum.MEMBER;
+
+        if(phoneNumber.length() != 7 && phoneNumber.length() != 8){
+            throw new IllegalArgumentException("번호는 7~8 자리만 가능합니다.");
+        }
 
         Optional<Member> join = memberRepository.findByPhoneNumber(phoneNumber);
         if (join.isPresent()) {
             throw new IllegalArgumentException("이미 등록된 번호입니다.");
         }
-        Member member = new Member(phoneNumber,mileage,responseSMS,role);
+        Member member = new Member("010"+phoneNumber,point, smsAgreement,role);
         memberRepository.saveAndFlush(member);
     }
 
