@@ -25,6 +25,9 @@ public class Menu {
     @Column(nullable = false)
     private Integer price;
 
+    @Column(nullable = false)
+    private String imageUrl;
+
     @OneToMany(mappedBy = "menu")
     List<Orders> orders = new ArrayList<>();
 }
