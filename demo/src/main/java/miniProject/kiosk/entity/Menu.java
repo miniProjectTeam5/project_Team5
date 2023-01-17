@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Entity
 @NoArgsConstructor
@@ -27,9 +24,6 @@ public class Menu {
 
     @Column(nullable = false)
     private String imageUrl;
-
-    @OneToMany(mappedBy = "menu")
-    List<Orders> orders = new ArrayList<>();
 
     public Menu(String menuName, Integer price){
         this.menuName = menuName;
