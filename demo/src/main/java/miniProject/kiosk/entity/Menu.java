@@ -28,5 +28,6 @@ public class Menu {
     public Menu(String menuName, Integer price, String imageUrl){
         this.menuName = menuName;
         this.price = price;
+        this.imageUrl = imageUrl;
     }
 }
