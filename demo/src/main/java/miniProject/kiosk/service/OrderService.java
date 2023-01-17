@@ -64,13 +64,11 @@ public class OrderService {
 
     public OrderRequestMsgDto saveOrder(List<Orders> ordersList, String phoneNumber, HttpServletResponse response) {
 
-
         for (Orders orders : ordersList) {
             Menu menu = menuRepository.findByMenuName(orders.getMenuName());
 
             if (menu == null) {
                 throw new IllegalArgumentException("메뉴 정보를 찾을 수 없습니다");
-
 
             } else {
                 Orders orders1 = Orders.builder()
