@@ -7,8 +7,6 @@
 //@RestController
 //@RequiredArgsConstructor
 //public class OrderNumberController {
-//
 //    private final OrderNumberService orderNumberService;
-//
 //
 //}

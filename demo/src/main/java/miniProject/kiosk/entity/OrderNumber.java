@@ -7,7 +7,7 @@
 //import lombok.Setter;
 //
 //@Getter
-//@NoArgsConstructor
 //@Entity
+//@NoArgsConstructor
 //public class OrderNumber {
 //}

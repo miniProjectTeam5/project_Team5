@@ -21,10 +21,11 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public
+    static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 60 * 60 * 1000L;
+    private static final long TOKEN_TIME = 5 * 60 * 1000L;
 
 
     @Value("${jwt.secret.key}")
@@ -49,12 +50,12 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String phoneNumber, MemberRoleEnum role) {
+    public String createToken(MemberRoleEnum role) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(phoneNumber)
+
                         .claim(AUTHORIZATION_KEY, role)
                         .claim("time", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/hh/mm")))
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
@@ -85,6 +86,5 @@ public class JwtUtil {
     public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
-
 
 }

@@ -14,12 +14,12 @@
 //
 //    private final OrderNumberRepository orderNumberRepository;
 //
-////    @Transactional
-////    public OrderNumberDto NumberingOrder(Long id, Long ordered) {
-////        //OderNumber FK
-////        OrderNumber orderid = orderNumberRepository.findById(id).orElseThrow(); //주문 id
-////        OrderNumberDto orderNumber = new OrderNumberDto(); // 주문 번호
-////        return orderNumber;
-////    }
+//    @Transactional
+//    public OrderNumberDto NumberingOrder(Long id, Long ordered) {
+//        //OderNumber FK
+//        OrderNumber orderid = orderNumberRepository.findById(id).orElseThrow(); //주문 id
+//        OrderNumberDto orderNumber = new OrderNumberDto(); // 주문 번호
+//        return orderNumber;
+//    }
 //
 //}
