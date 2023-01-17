@@ -25,7 +25,7 @@ public class Menu {
     @Column(nullable = false)
     private String imageUrl;
 
-    public Menu(String menuName, Integer price){
+    public Menu(String menuName, Integer price, String imageUrl){
         this.menuName = menuName;
         this.price = price;
     }

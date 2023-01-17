@@ -9,4 +9,6 @@ public class MenuRequestDto {
     private String menuName;
 
     private Integer price;
+
+    private String imageUrl;
 }

@@ -33,4 +33,8 @@ public class Member extends Timestamped {
         this.role = role;
     }
 
+    public Member(Integer point){
+        this.point = point;
+    }
+
 }

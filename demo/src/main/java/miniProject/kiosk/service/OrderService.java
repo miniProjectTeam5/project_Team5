@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import miniProject.kiosk.dto.OrderRequestDto;
 import miniProject.kiosk.dto.OrderRequestMsgDto;
+import miniProject.kiosk.dto.member.MemberJoinRequestDto;
+import miniProject.kiosk.entity.Member;
 import miniProject.kiosk.entity.MemberRoleEnum;
 import miniProject.kiosk.entity.Menu;
 import miniProject.kiosk.entity.Orders;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -73,7 +76,7 @@ public class OrderService {
                 throw new IllegalArgumentException("메뉴 정보를 찾을 수 없습니다");
 
 
-            } else {
+            } else{
                 Orders orders1 = Orders.builder()
                         .menuName(orders.getMenuName())
                         .amount(orders.getAmount())
@@ -81,6 +84,7 @@ public class OrderService {
                         .build();
 
                 orderRepository.save(orders1);
+
             }
 
         }
