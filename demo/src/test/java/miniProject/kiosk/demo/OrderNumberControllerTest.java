@@ -1,4 +1,4 @@
-package miniProject.kiosk;
-
-public class OrderNumberControllerTest {
-}
+//package miniProject.kiosk;
+//
+//public class OrderNumberControllerTest {
+//}

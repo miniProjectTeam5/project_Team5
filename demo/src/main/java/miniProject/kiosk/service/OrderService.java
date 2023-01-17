@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import miniProject.kiosk.dto.OrderRequestDto;
 import miniProject.kiosk.dto.OrderRequestMsgDto;
+import miniProject.kiosk.dto.OrderResponseDto;
 import miniProject.kiosk.entity.MemberRoleEnum;
 import miniProject.kiosk.entity.Menu;
 import miniProject.kiosk.entity.Orders;
@@ -27,7 +28,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MenuRepository menuRepository;
 
-    public OrderRequestMsgDto totalPayment(HttpServletRequest request) {
+    public OrderResponseDto totalPayment(HttpServletRequest request) {
 
         // Request에서 Token 가져오기
         String token = jwtUtil.resolveToken(request);
@@ -55,7 +56,7 @@ public class OrderService {
                 Integer price = targetMenu.getPrice() * targetOrder.getAmount();
                 sum += price;
             }
-            return new OrderRequestMsgDto("총 가격은 " + sum + "입니다", HttpStatus.OK.value());
+            return new OrderResponseDto(sum);
         } else {
             throw new IllegalArgumentException("토큰이 확인되지 않음");
         }

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import miniProject.kiosk.dto.OrderRequestDto;
 import miniProject.kiosk.dto.OrderRequestMsgDto;
+import miniProject.kiosk.dto.OrderResponseDto;
 import miniProject.kiosk.entity.Menu;
 import miniProject.kiosk.entity.Orders;
 import miniProject.kiosk.service.OrderService;
@@ -31,7 +32,7 @@ public class OrderController {
     //order에 들어간 메뉴들의 가격을 찾아서 합산하면 될 것 같은데 어떻게 할까?
     //어디까지가 하나의 주문인지 어떻게 알지?
     @GetMapping("/order/bill")
-    public OrderRequestMsgDto totalPayment (HttpServletRequest request) {
+    public OrderResponseDto totalPayment (HttpServletRequest request) {
         return orderService.totalPayment(request);
     }
 

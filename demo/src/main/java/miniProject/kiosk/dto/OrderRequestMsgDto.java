@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class OrderRequestMsgDto {
     private String msg;
     private Integer httpStatus;
