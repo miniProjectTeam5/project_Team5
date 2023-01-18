@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import miniProject.kiosk.dto.*;
-import miniProject.kiosk.dto.member.PointsRequestDto;
+
 import miniProject.kiosk.entity.Menu;
 import miniProject.kiosk.entity.Orders;
 import miniProject.kiosk.service.OrderService;

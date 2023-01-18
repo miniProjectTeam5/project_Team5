@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import miniProject.kiosk.dto.*;
-import miniProject.kiosk.dto.member.PointsRequestDto;
+
 import miniProject.kiosk.dto.member.UpdatePointDto;
 import miniProject.kiosk.entity.Member;
 import miniProject.kiosk.entity.MemberRoleEnum;
@@ -147,7 +147,7 @@ public class OrderService {
         long sum = 0;
 
         for (Orders order : orders) {
-            sum += order.getMenu().getPrice();
+            sum += order.getMenu().getPrice() * (order.getAmount());
         }
 
         return sum;
