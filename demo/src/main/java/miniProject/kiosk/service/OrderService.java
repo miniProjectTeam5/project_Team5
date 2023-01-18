@@ -6,9 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import miniProject.kiosk.dto.OrderRequestDto;
-import miniProject.kiosk.dto.OrderRequestMsgDto;
-import miniProject.kiosk.dto.OrderResponseDto;
+import miniProject.kiosk.dto.*;
 import miniProject.kiosk.dto.member.PointsRequestDto;
 import miniProject.kiosk.dto.member.UpdatePointDto;
 import miniProject.kiosk.entity.Member;
@@ -21,6 +19,7 @@ import miniProject.kiosk.repository.MenuRepository;
 import miniProject.kiosk.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -92,26 +91,21 @@ public class OrderService {
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(MemberRoleEnum.MEMBER));
 
-//        Member member = memberRepository.findByPhoneNumber(phoneNumber);
-//        log.info("폰번호" + phoneNumber);
-//        UpdatePointDto updatePointDto = new UpdatePointDto(sum);
-//
-//        if (member != null){
-//            member.updatePoint(updatePointDto);
-//        }
             return new OrderRequestMsgDto("주문하였습니다.", HttpStatus.OK.value());
 
     }
 
-    public Integer stackPoints(String phoneNumber, HttpServletRequest request) {
+    @Transactional
+    public Integer stackPoints(PhoneNumRequestDto phoneNumber, HttpServletRequest request) {
 
         // Request에서 Token 가져오기
         String token = jwtUtil.resolveToken(request);
         Claims claims;
 
-        Member member = memberRepository.findByPhoneNumber(phoneNumber);
+        log.info("폰넘버 = " + phoneNumber.getPhoneNumber());
+        Member member = memberRepository.findByPhoneNumber(phoneNumber.getPhoneNumber());
 
-        if ((token != null) && (member != null))  {
+        if ((token != null) && member != null)  {
             if (jwtUtil.validateToken(token)) {
                 // 토큰에서 사용자 정보 가져오기
                 claims = jwtUtil.getUserInfoFromToken(token);
@@ -123,7 +117,6 @@ public class OrderService {
             log.info("시간정보입니다 " + time);
 
             List<Orders> targetOrders = orderRepository.findAllByCreatedAt(time);
-            log.info(targetOrders.toString());
 
             Integer sum = 0;
 
@@ -132,15 +125,31 @@ public class OrderService {
                 Integer price = targetMenu.getPrice() * targetOrder.getAmount();
                 sum += price;
             }
+            log.info("sum = " + sum);
+            double point = sum * ((double)5/100);
+            UpdatePointDto updatePointDto = new UpdatePointDto((int)point);
 
-            Integer point = sum * (5 / 100);
-            UpdatePointDto updatePointDto = new UpdatePointDto(point);
-
+            log.info("point = " + point);
             member.updatePoint(updatePointDto);
-            return point;
+            return (int)point;
 
         } else {
             throw new IllegalArgumentException("토큰이 확인되지 않음");
         }
+    }
+
+    @Transactional
+    public Long dailySales(DailySalesRequestDto date) {
+        List<Orders> orders = orderRepository.findAllByCreatedAtContains(date.getDate());
+        log.info("date = " + date);
+        log.info("orders = "+ orders );
+
+        long sum = 0;
+
+        for (Orders order : orders) {
+            sum += order.getMenu().getPrice();
+        }
+
+        return sum;
     }
 }

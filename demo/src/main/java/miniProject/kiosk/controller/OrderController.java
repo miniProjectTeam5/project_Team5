@@ -3,9 +3,7 @@ package miniProject.kiosk.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import miniProject.kiosk.dto.OrderRequestDto;
-import miniProject.kiosk.dto.OrderRequestMsgDto;
-import miniProject.kiosk.dto.OrderResponseDto;
+import miniProject.kiosk.dto.*;
 import miniProject.kiosk.dto.member.PointsRequestDto;
 import miniProject.kiosk.entity.Menu;
 import miniProject.kiosk.entity.Orders;
@@ -35,8 +33,13 @@ public class OrderController {
     }
 
     @PostMapping("/order/points")
-    public Integer stackPoints(@RequestBody String phoneNumber, HttpServletRequest request) {
+    public Integer stackPoints(@RequestBody PhoneNumRequestDto phoneNumber, HttpServletRequest request) {
         return orderService.stackPoints(phoneNumber, request);
+    }
+
+    @PostMapping("/order/dailySales")
+    public Long dailySales(@RequestBody DailySalesRequestDto date) {
+        return orderService.dailySales(date);
     }
 
 

@@ -10,4 +10,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Orders, Long> {
     List<Orders> findAllByCreatedAt(String time);
 
+    List<Orders> findAllByCreatedAtContains(String date);
+
+
 }

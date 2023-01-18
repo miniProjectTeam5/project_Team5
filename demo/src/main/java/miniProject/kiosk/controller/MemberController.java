@@ -24,10 +24,10 @@ public class MemberController {
         return ResponseEntity.ok(new SecurityExceptionDto(200, msg));
     }
 
-    @PostMapping("/member/login")
-    public ResponseEntity<SecurityExceptionDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-        memberService.login(loginRequestDto, response);
-        String text = "로그인 성공";
-        return ResponseEntity.ok(new SecurityExceptionDto(200, text));
-    }
+//    @PostMapping("/member/login")
+//    public ResponseEntity<SecurityExceptionDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+//        memberService.login(loginRequestDto, response);
+//        String text = "로그인 성공";
+//        return ResponseEntity.ok(new SecurityExceptionDto(200, text));
+//    }
 }
