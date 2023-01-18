@@ -3,6 +3,7 @@ package miniProject.kiosk.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import miniProject.kiosk.dto.member.MemberJoinRequestDto;
 
 @Entity
 @Getter
@@ -24,15 +25,11 @@ public class Member extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private MemberRoleEnum role;
 
-    public Member(String phoneNumber, Integer point, Boolean smsAgreement, MemberRoleEnum role){
-        this.phoneNumber = phoneNumber;
-        this.point = point;
-        this.smsAgreement = smsAgreement;
+    public Member(MemberJoinRequestDto requestDto, MemberRoleEnum role){
+        this.phoneNumber = requestDto.getPhoneNumber();
+        this.point = requestDto.getPoint();
+        this.smsAgreement = requestDto.getSmsAgreement();
         this.role = role;
-    }
-
-    public Member(Integer point){
-        this.point = point;
     }
 
 }

@@ -23,7 +23,7 @@ public class MenuController {
 
     @GetMapping("/store/menus")
     public List<Menu> lookingMenus(){
-        return menuService.Look_upLists();
+        return menuService.showMenu();
     }
 
 
