@@ -7,5 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
-    Optional<Member> findByPhoneNumber(String phoneNumber);
+    Member findByPhoneNumber(String phoneNumber);
+
+
 }

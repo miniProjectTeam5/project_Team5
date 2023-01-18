@@ -3,6 +3,7 @@ package miniProject.kiosk.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import miniProject.kiosk.dto.member.UpdatePointDto;
 
 @Entity
 @Getter
@@ -31,8 +32,10 @@ public class Member extends Timestamped {
         this.role = role;
     }
 
-    public Member(Integer point){
-        this.point = point;
+    public void updatePoint(UpdatePointDto updatePointDto) {
+        this.point = updatePointDto.getPoint();
     }
+
+
 
 }

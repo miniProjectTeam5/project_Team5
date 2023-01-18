@@ -50,12 +50,12 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String createToken(String phoneNumber, MemberRoleEnum role) {
+    public String createToken(MemberRoleEnum role) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(phoneNumber)
+
                         .claim(AUTHORIZATION_KEY, role)
                         .claim("time", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/hh/mm")))
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))

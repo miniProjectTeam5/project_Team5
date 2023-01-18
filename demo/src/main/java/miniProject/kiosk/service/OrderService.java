@@ -1,22 +1,25 @@
 package miniProject.kiosk.service;
 
 import io.jsonwebtoken.Claims;
-import jakarta.persistence.criteria.Order;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import miniProject.kiosk.dto.OrderRequestDto;
 import miniProject.kiosk.dto.OrderRequestMsgDto;
 import miniProject.kiosk.dto.OrderResponseDto;
+import miniProject.kiosk.dto.member.PhoneNumRequestDto;
+import miniProject.kiosk.dto.member.UpdatePointDto;
+import miniProject.kiosk.entity.Member;
 import miniProject.kiosk.entity.MemberRoleEnum;
 import miniProject.kiosk.entity.Menu;
 import miniProject.kiosk.entity.Orders;
 import miniProject.kiosk.jwt.JwtUtil;
+import miniProject.kiosk.repository.MemberRepository;
 import miniProject.kiosk.repository.MenuRepository;
 import miniProject.kiosk.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class OrderService {
+    private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     private final OrderRepository orderRepository;
     private final MenuRepository menuRepository;
@@ -64,6 +68,8 @@ public class OrderService {
 
     public OrderRequestMsgDto saveOrder(List<Orders> ordersList, String phoneNumber, HttpServletResponse response) {
 
+        int sum = 0;
+
         for (Orders orders : ordersList) {
             Menu menu = menuRepository.findByMenuName(orders.getMenuName());
 
@@ -76,24 +82,65 @@ public class OrderService {
                         .amount(orders.getAmount())
                         .menu(menu)
                         .build();
-
                 orderRepository.save(orders1);
+                sum += menu.getPrice();
+                log.info("가격확인" + sum);
             }
-
         }
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(phoneNumber, MemberRoleEnum.MEMBER));
-        return new OrderRequestMsgDto("주문하였습니다.", HttpStatus.OK.value());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(MemberRoleEnum.MEMBER));
+
+//        Member member = memberRepository.findByPhoneNumber(phoneNumber);
+//        log.info("폰번호" + phoneNumber);
+//        UpdatePointDto updatePointDto = new UpdatePointDto(sum);
+//
+//        if (member != null){
+//            member.updatePoint(updatePointDto);
+//        }
+            return new OrderRequestMsgDto("주문하였습니다.", HttpStatus.OK.value());
 
     }
 
-    public Menu addMenu(Menu menu) {
-        Menu tempMenu = Menu.builder()
-                .menuName(menu.getMenuName())
-                .price(menu.getPrice())
-                .imageUrl(menu.getImageUrl())
-                .build();
-        menuRepository.save(tempMenu);
-        return tempMenu;
+    @Transactional
+    public Integer stackPoints(PhoneNumRequestDto phoneNumber, HttpServletRequest request) {
+
+        // Request에서 Token 가져오기
+        String token = jwtUtil.resolveToken(request);
+        Claims claims;
+
+        log.info("폰넘버 = " + phoneNumber.getPhoneNumber());
+        Member member = memberRepository.findByPhoneNumber(phoneNumber.getPhoneNumber());
+
+        if ((token != null) && member != null)  {
+            if (jwtUtil.validateToken(token)) {
+                // 토큰에서 사용자 정보 가져오기
+                claims = jwtUtil.getUserInfoFromToken(token);
+            } else {
+                throw new IllegalArgumentException("주문 신청에 오류가 있습니다.");
+            }
+
+            String time = (String) claims.get("time");
+            log.info("시간정보입니다 " + time);
+
+            List<Orders> targetOrders = orderRepository.findAllByCreatedAt(time);
+
+            Integer sum = 0;
+
+            for (Orders targetOrder : targetOrders) {
+                Menu targetMenu = targetOrder.getMenu();
+                Integer price = targetMenu.getPrice() * targetOrder.getAmount();
+                sum += price;
+            }
+            log.info("sum = " + sum);
+            double point = sum * ((double)5/100);
+            UpdatePointDto updatePointDto = new UpdatePointDto((int)point);
+
+            log.info("point = " + point);
+            member.updatePoint(updatePointDto);
+            return (int)point;
+
+        } else {
+            throw new IllegalArgumentException("토큰이 확인되지 않음");
+        }
     }
 }
