@@ -1,7 +1,6 @@
 package miniProject.kiosk.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import miniProject.kiosk.dto.member.UpdatePointDto;
@@ -15,7 +14,6 @@ public class Member extends Timestamped {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @Pattern(regexp = "([0-9]+$)",message = "숫자만 입력해주세요")
     private String phoneNumber;
 
     @Column(nullable = false)

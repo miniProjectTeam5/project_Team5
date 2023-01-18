@@ -19,23 +19,31 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private  final JwtUtil jwtUtil;
 
+    public static void main(String[] args) {
+        String regExp = "^010-?(\\d{4})-?(\\d{4})$";
+        String mobNum1 = "0101234";
+        System.out.println(mobNum1.matches(regExp));
+    }
+
     @Transactional
     public void joinMember(MemberJoinRequestDto requestDto){
         String phoneNumber = requestDto.getPhoneNumber();
         Integer point = 0;
         Boolean smsAgreement = requestDto.getSmsAgreement();
 
+        String regExp = "^010-(\\d{4})-(\\d{4})$";
+
         MemberRoleEnum role = MemberRoleEnum.MEMBER;
 
-        if(phoneNumber.length() != 7 && phoneNumber.length() != 8){
-            throw new IllegalArgumentException("번호는 7~8 자리만 가능합니다.");
+        if(!phoneNumber.matches(regExp)){
+            throw new IllegalArgumentException("번호는 11자리의 숫자여야합니다.");
         }
 
         Member join = memberRepository.findByPhoneNumber(phoneNumber);
         if (join != null) {
             throw new IllegalArgumentException("이미 등록된 번호입니다.");
         }
-        Member member = new Member("010"+phoneNumber,point, smsAgreement,role);
+        Member member = new Member(phoneNumber,point, smsAgreement,role);
         memberRepository.saveAndFlush(member);
     }
 
