@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import miniProject.kiosk.dto.MenuRequestDto;
 
 @Getter
 @Entity
@@ -25,9 +26,9 @@ public class Menu {
     @Column(nullable = false)
     private String imageUrl;
 
-    public Menu(String menuName, Integer price, String imageUrl){
-        this.menuName = menuName;
-        this.price = price;
-        this.imageUrl = imageUrl;
+    public Menu(MenuRequestDto menuRequestDto){
+        this.menuName = menuRequestDto.getMenuName();
+        this.price = menuRequestDto.getPrice();
+        this.imageUrl = menuRequestDto.getImageUrl();
     }
 }

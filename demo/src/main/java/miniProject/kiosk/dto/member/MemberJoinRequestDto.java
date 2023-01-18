@@ -6,7 +6,7 @@ import lombok.Getter;
 public class MemberJoinRequestDto {
     private String phoneNumber;
 
-    private Integer mileage;
+    private Integer point=0;
 
     private Boolean smsAgreement;
 }
