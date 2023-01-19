@@ -53,7 +53,7 @@ public class JwtUtil {
     public String resolveTokenFromCookie(String cookie) {
         String bearerToken = cookie;
         if (StringUtils.hasText(bearerToken)) {
-            return bearerToken;
+            return bearerToken.substring(7);
         }
         return null;
     }

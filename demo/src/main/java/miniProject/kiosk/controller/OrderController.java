@@ -21,13 +21,13 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order")
-    public OrderRequestMsgDto saveOrder(@RequestBody List<Orders> ordersList, String phoneNumber, HttpServletResponse response) {
+    public TokenAccessDto saveOrder(@RequestBody List<Orders> ordersList, String phoneNumber, HttpServletResponse response) {
         return orderService.saveOrder(ordersList, phoneNumber, response);
     }
 
-    @GetMapping("/order/bill")
-    public OrderResponseDto totalPayment(HttpServletRequest request) {
-        return orderService.totalPayment(request);
+    @PostMapping("/order/bill")
+    public OrderResponseDto totalPayment(@RequestBody TokenAccessDto token, HttpServletResponse response) {
+        return orderService.totalPayment(token, response);
     }
 
     @PostMapping("/order/points")

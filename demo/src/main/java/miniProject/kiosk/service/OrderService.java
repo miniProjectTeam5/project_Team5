@@ -36,14 +36,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MenuRepository menuRepository;
 
-    public OrderResponseDto totalPayment(HttpServletRequest request) {
+    public OrderResponseDto totalPayment(TokenAccessDto token, HttpServletResponse response) {
 
         // Request에서 Token 가져오기
-        String token = jwtUtil.resolveToken(request);
+        log.info("requestToken = " + token.getAuthorization());
+        String tokens = token.getAuthorization().substring(7);
+        log.info("Token = " + tokens);
         Claims claims;
 
         if (token != null) {
-            claims = jwtUtil.getUserInfoFromToken(token);
+            claims = jwtUtil.getUserInfoFromToken(tokens);
 //            if (jwtUtil.validateToken(token)) {
 //                // 토큰에서 사용자 정보 가져오기
 //
@@ -71,7 +73,7 @@ public class OrderService {
         }
     }
 
-    public OrderRequestMsgDto saveOrder(List<Orders> ordersList, String phoneNumber, HttpServletResponse response) {
+    public TokenAccessDto saveOrder(List<Orders> ordersList, String phoneNumber, HttpServletResponse response) {
 
         int sum = 0;
 
@@ -99,7 +101,7 @@ public class OrderService {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
-        return new OrderRequestMsgDto("성공", HttpStatus.OK.value());
+        return new TokenAccessDto(token);
     }
 
     @Transactional
