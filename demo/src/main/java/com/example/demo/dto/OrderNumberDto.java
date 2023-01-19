@@ -1,6 +1,8 @@
-package com.example.demo.dto;
+package miniProject.kiosk.dto;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,10 +13,17 @@ import lombok.Setter;
 public class OrderNumberDto {
 
     Long orderId;
-    Long oderNumber;
+    OrderNumber orderNumber;
 
-    public Long Order(Long orderId){
-        return this.oderNumber;
+    Long waitingNumber; // 대기번호 추가
+
+//    public OrderNumberDto(OrderNumber orderId){
+//        return this.orderNumber;
+//    }
+
+    public OrderNumberDto(OrderNumber orderNumber){
+        return this.waitingNumber;
     }
+
 
 }
