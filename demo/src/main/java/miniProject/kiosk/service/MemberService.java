@@ -20,7 +20,7 @@ public class MemberService {
     private  final JwtUtil jwtUtil;
 
     @Transactional
-    public void joinMember(MemberJoinRequestDto requestDto){
+    public void joinMember(MemberJoinRequestDto requestDto,HttpServletResponse response){
         String phoneNumber = requestDto.getPhoneNumber();
 
         String regExp = "^010-(\\d{4})-(\\d{4})$";
@@ -37,6 +37,8 @@ public class MemberService {
         }
         Member member = new Member(requestDto,role);
         memberRepository.saveAndFlush(member);
+
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
     }
 
         //추가로 로그인 기능이 필요하지 않을 것 같아 일단 주석처리 해 두었습니다.
