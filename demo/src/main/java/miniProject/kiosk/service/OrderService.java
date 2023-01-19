@@ -2,6 +2,7 @@ package miniProject.kiosk.service;
 
 import io.jsonwebtoken.Claims;
 import jakarta.persistence.criteria.Order;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,9 @@ import miniProject.kiosk.jwt.JwtUtil;
 import miniProject.kiosk.repository.MemberRepository;
 import miniProject.kiosk.repository.MenuRepository;
 import miniProject.kiosk.repository.OrderRepository;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,13 +43,14 @@ public class OrderService {
         Claims claims;
 
         if (token != null) {
-            if (jwtUtil.validateToken(token)) {
-                // 토큰에서 사용자 정보 가져오기
-                claims = jwtUtil.getUserInfoFromToken(token);
-
-            } else {
-                throw new IllegalArgumentException("주문 신청에 오류가 있습니다.");
-            }
+            claims = jwtUtil.getUserInfoFromToken(token);
+//            if (jwtUtil.validateToken(token)) {
+//                // 토큰에서 사용자 정보 가져오기
+//
+//
+//            } else {
+//                throw new IllegalArgumentException("주문 신청에 오류가 있습니다.");
+//            }
 
             String time = (String) claims.get("time");
             log.info("시간정보입니다 " + time);
@@ -90,10 +94,12 @@ public class OrderService {
             }
         }
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(MemberRoleEnum.MEMBER));
+        String token = jwtUtil.createToken(MemberRoleEnum.MEMBER);
 
-            return new OrderRequestMsgDto("주문하였습니다.", HttpStatus.OK.value());
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
+        return new OrderRequestMsgDto("성공", HttpStatus.OK.value());
     }
 
     @Transactional
@@ -106,7 +112,7 @@ public class OrderService {
         log.info("폰넘버 = " + phoneNumber.getPhoneNumber());
         Member member = memberRepository.findByPhoneNumber(phoneNumber.getPhoneNumber());
 
-        if ((token != null) && member != null)  {
+        if ((token != null) && member != null) {
             if (jwtUtil.validateToken(token)) {
                 // 토큰에서 사용자 정보 가져오기
                 claims = jwtUtil.getUserInfoFromToken(token);
@@ -127,12 +133,12 @@ public class OrderService {
                 sum += price;
             }
             log.info("sum = " + sum);
-            double point = sum * ((double)5/100);
-            UpdatePointDto updatePointDto = new UpdatePointDto((int)point);
+            double point = sum * ((double) 5 / 100);
+            UpdatePointDto updatePointDto = new UpdatePointDto((int) point);
 
             log.info("point = " + point);
             member.updatePoint(updatePointDto);
-            return (int)point;
+            return (int) point;
 
         } else {
             throw new IllegalArgumentException("토큰이 확인되지 않음");
@@ -143,7 +149,7 @@ public class OrderService {
     public Long dailySales(DailySalesRequestDto date) {
         List<Orders> orders = orderRepository.findAllByCreatedAtContains(date.getDate());
         log.info("date = " + date);
-        log.info("orders = "+ orders );
+        log.info("orders = " + orders);
 
         long sum = 0;
 

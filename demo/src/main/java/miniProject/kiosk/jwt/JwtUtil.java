@@ -49,6 +49,15 @@ public class JwtUtil {
         return null;
     }
 
+    // 쿠키 토큰을 가져오기
+    public String resolveTokenFromCookie(String cookie) {
+        String bearerToken = cookie;
+        if (StringUtils.hasText(bearerToken)) {
+            return bearerToken;
+        }
+        return null;
+    }
+
     // 토큰 생성
     public String createToken(MemberRoleEnum role) {
         Date date = new Date();
@@ -59,7 +68,6 @@ public class JwtUtil {
                         .claim(AUTHORIZATION_KEY, role)
                         .claim("time", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/hh/mm")))
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
-                        //이거를 가져가자!!
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
                         .compact();
