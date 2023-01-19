@@ -24,6 +24,9 @@ public class Orders extends Timestamped {
     @Column(nullable = false)
     private Integer amount;
 
+    @Column(nullable = false)
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "menu_id")
     private Menu menu;

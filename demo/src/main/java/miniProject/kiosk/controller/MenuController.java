@@ -2,12 +2,10 @@ package miniProject.kiosk.controller;
 
 import lombok.RequiredArgsConstructor;
 import miniProject.kiosk.dto.MenuRequestDto;
+import miniProject.kiosk.dto.OrderRequestMsgDto;
 import miniProject.kiosk.entity.Menu;
 import miniProject.kiosk.service.MenuService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +22,11 @@ public class MenuController {
     @GetMapping("/store/menus")
     public List<Menu> lookingMenus(){
         return menuService.showMenu();
+    }
+
+    @DeleteMapping("/store/menus/{id}")
+    public OrderRequestMsgDto deleteMenus(@PathVariable Long id) {
+        return menuService.deleteMenu(id);
     }
 
 

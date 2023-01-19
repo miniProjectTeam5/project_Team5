@@ -26,7 +26,6 @@ public class OrderController {
         return orderService.saveOrder(ordersList, phoneNumber, response);
     }
 
-
     @GetMapping("/order/bill")
     public OrderResponseDto totalPayment (HttpServletRequest request) {
         return orderService.totalPayment(request);
@@ -41,6 +40,5 @@ public class OrderController {
     public Long dailySales(@RequestBody DailySalesRequestDto date) {
         return orderService.dailySales(date);
     }
-
 
 }

@@ -81,6 +81,7 @@ public class OrderService {
                 Orders orders1 = Orders.builder()
                         .menuName(orders.getMenuName())
                         .amount(orders.getAmount())
+                        .imageUrl(menu.getImageUrl())
                         .menu(menu)
                         .build();
                 orderRepository.save(orders1);
