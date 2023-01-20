@@ -1,6 +1,7 @@
 package miniProject.kiosk.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import miniProject.kiosk.dto.OrderRequestMsgDto;
 import miniProject.kiosk.dto.member.LoginRequestDto;
 import miniProject.kiosk.dto.member.MemberJoinRequestDto;
 import miniProject.kiosk.dto.member.SecurityExceptionDto;
@@ -18,16 +19,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/member/join")
-    public ResponseEntity<SecurityExceptionDto> signup(@RequestBody MemberJoinRequestDto joinRequestDto, HttpServletResponse response) {
-        memberService.joinMember(joinRequestDto,response);
-        String msg = "멤버 가입에 성공했습니다.";
-        return ResponseEntity.ok(new SecurityExceptionDto(200, msg));
+    public OrderRequestMsgDto signup(@RequestBody MemberJoinRequestDto joinRequestDto, HttpServletResponse response) {
+        return memberService.joinMember(joinRequestDto,response);
     }
 
-//    @PostMapping("/member/login")
-//    public ResponseEntity<SecurityExceptionDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-//        memberService.login(loginRequestDto, response);
-//        String text = "로그인 성공";
-//        return ResponseEntity.ok(new SecurityExceptionDto(200, text));
-//    }
+    @PostMapping("/member/login")
+    public OrderRequestMsgDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        return memberService.login(loginRequestDto, response);
+    }
 }

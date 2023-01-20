@@ -31,8 +31,8 @@ public class OrderController {
     }
 
     @PostMapping("/order/points")
-    public Integer stackPoints(@RequestBody PhoneNumRequestDto phoneNumber, HttpServletRequest request) {
-        return orderService.stackPoints(phoneNumber, request);
+    public Integer stackPoints(@RequestBody PhoneNumRequestDto phoneNumber, TokenAccessDto token) {
+        return orderService.stackPoints(phoneNumber, token);
     }
 
     @PostMapping("/order/dailySales")

@@ -10,13 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import miniProject.kiosk.dto.*;
 
 import miniProject.kiosk.dto.member.UpdatePointDto;
-import miniProject.kiosk.entity.Member;
-import miniProject.kiosk.entity.MemberRoleEnum;
-import miniProject.kiosk.entity.Menu;
-import miniProject.kiosk.entity.Orders;
+import miniProject.kiosk.entity.*;
 import miniProject.kiosk.jwt.JwtUtil;
 import miniProject.kiosk.repository.MemberRepository;
 import miniProject.kiosk.repository.MenuRepository;
+import miniProject.kiosk.repository.OrderNumberRepository;
 import miniProject.kiosk.repository.OrderRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,6 +33,7 @@ public class OrderService {
     private final JwtUtil jwtUtil;
     private final OrderRepository orderRepository;
     private final MenuRepository menuRepository;
+    private final OrderNumberRepository orderNumberRepository;
 
     public OrderResponseDto totalPayment(TokenAccessDto token, HttpServletResponse response) {
 
@@ -98,6 +97,12 @@ public class OrderService {
 
         String token = jwtUtil.createToken(MemberRoleEnum.MEMBER);
 
+        OrderNumberRequestDto orderNumberRequestDto = new OrderNumberRequestDto();
+        orderNumberRequestDto.setOrderCnt(orderNumberRequestDto.getOrderCnt());
+        OrderNumber orderNumber = new OrderNumber(orderNumberRequestDto);
+
+        orderNumberRepository.save(orderNumber);
+
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
@@ -105,19 +110,19 @@ public class OrderService {
     }
 
     @Transactional
-    public Integer stackPoints(PhoneNumRequestDto phoneNumber, HttpServletRequest request) {
+    public Integer stackPoints(PhoneNumRequestDto phoneNumber, TokenAccessDto token) {
 
-        // Request에서 Token 가져오기
-        String token = jwtUtil.resolveToken(request);
+
+        String tokens = token.getAuthorization().substring(7);
         Claims claims;
 
         log.info("폰넘버 = " + phoneNumber.getPhoneNumber());
         Member member = memberRepository.findByPhoneNumber(phoneNumber.getPhoneNumber());
 
-        if ((token != null) && member != null) {
-            if (jwtUtil.validateToken(token)) {
+        if ((tokens != null) && member != null) {
+            if (jwtUtil.validateToken(tokens)) {
                 // 토큰에서 사용자 정보 가져오기
-                claims = jwtUtil.getUserInfoFromToken(token);
+                claims = jwtUtil.getUserInfoFromToken(tokens);
             } else {
                 throw new IllegalArgumentException("주문 신청에 오류가 있습니다.");
             }
@@ -160,5 +165,10 @@ public class OrderService {
         }
 
         return sum;
+    }
+
+    public OrderNumberRequestDto cntOrder() {
+        Long cnt = orderNumberRepository.countBy();
+        return new OrderNumberRequestDto(cnt);
     }
 }
