@@ -110,14 +110,14 @@ public class OrderService {
     }
 
     @Transactional
-    public Integer stackPoints(PhoneNumRequestDto phoneNumber, TokenAccessDto token) {
+    public Integer stackPoints(StackPointDto stackPointDto) {
 
 
-        String tokens = token.getAuthorization().substring(7);
+        String tokens = stackPointDto.getToken().substring(7);
         Claims claims;
 
-        log.info("폰넘버 = " + phoneNumber.getPhoneNumber());
-        Member member = memberRepository.findByPhoneNumber(phoneNumber.getPhoneNumber());
+        log.info("폰넘버 = " + stackPointDto.getPhoneNumber());
+        Member member = memberRepository.findByPhoneNumber(stackPointDto.getPhoneNumber());
 
         if ((tokens != null) && member != null) {
             if (jwtUtil.validateToken(tokens)) {
