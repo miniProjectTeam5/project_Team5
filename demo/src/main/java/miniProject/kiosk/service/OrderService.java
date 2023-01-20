@@ -110,7 +110,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Integer stackPoints(StackPointDto stackPointDto) {
+    public StackPointResponseDto stackPoints(StackPointDto stackPointDto) {
 
 
         String tokens = stackPointDto.getToken().substring(7);
@@ -145,7 +145,7 @@ public class OrderService {
 
             log.info("point = " + point);
             member.updatePoint(updatePointDto);
-            return (int) point;
+            return new StackPointResponseDto((int) point);
 
         } else {
             throw new IllegalArgumentException("토큰이 확인되지 않음");

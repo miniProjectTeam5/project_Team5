@@ -31,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping("/order/points")
-    public Integer stackPoints(@RequestBody StackPointDto stackPointDto) {
+    public StackPointResponseDto stackPoints(@RequestBody StackPointDto stackPointDto) {
         return orderService.stackPoints(stackPointDto);
     }
 
