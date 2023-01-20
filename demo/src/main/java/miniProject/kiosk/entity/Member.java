@@ -3,6 +3,8 @@ package miniProject.kiosk.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import miniProject.kiosk.dto.member.UpdatePointDto;
+import miniProject.kiosk.dto.member.MemberJoinRequestDto;
 
 @Entity
 @Getter
@@ -16,14 +18,24 @@ public class Member extends Timestamped {
     private String phoneNumber;
 
     @Column(nullable = false)
-    private Integer mileage;
+    private Integer point;
 
     @Column(nullable = false)
-    private Boolean responseSMS;
+    private Boolean smsAgreement;
 
-    public Member(String phoneNumber, Integer mileage, Boolean responseSMS){
-        this.phoneNumber = phoneNumber;
-        this.mileage = mileage;
-        this.responseSMS = responseSMS;
+    @Enumerated(value = EnumType.STRING)
+    private MemberRoleEnum role;
+
+    public Member(MemberJoinRequestDto requestDto, MemberRoleEnum role){
+        this.phoneNumber = requestDto.getPhoneNumber();
+        this.point = requestDto.getPoint();
+        this.smsAgreement = requestDto.getSmsAgreement();
+        this.role = role;
     }
+
+    public void updatePoint(UpdatePointDto updatePointDto) {
+        this.point = updatePointDto.getPoint();
+    }
+
+
 }

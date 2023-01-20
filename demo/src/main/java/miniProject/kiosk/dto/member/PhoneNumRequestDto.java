@@ -3,10 +3,6 @@ package miniProject.kiosk.dto.member;
 import lombok.Getter;
 
 @Getter
-public class MemberJoinRequestDto {
+public class PhoneNumRequestDto {
     private String phoneNumber;
-
-    private Integer point=0;
-
-    private Boolean smsAgreement;
 }

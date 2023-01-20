@@ -1,13 +1,12 @@
 package miniProject.kiosk.dto;
 
-
 import lombok.Getter;
-
 @Getter
-
-public class OrderRequestDto {
-
+public class MenuRequestDto {
+    
     private String menuName;
-    private Integer amount;
 
+    private Integer price;
+
+    private String imageUrl;
 }
