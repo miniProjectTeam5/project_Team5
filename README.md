@@ -37,11 +37,11 @@
 ![5팀 마이 키오스크 API 명세](https://user-images.githubusercontent.com/118980125/213664490-89d24142-55c7-46d6-959b-0d2c3099fa30.png)
 
 
-## ERD
+## ↔ ERD
 ![kioskErd](https://user-images.githubusercontent.com/118980125/213663737-56a04b61-9874-4c8f-a5da-a9000200e74e.png)
 
 
-## overView
+## 🔭 overView
 ![image](https://user-images.githubusercontent.com/118980125/213660987-3dddbc9c-9420-490d-91a3-0705e6385292.png)
 ![image (1)](https://user-images.githubusercontent.com/118980125/213660995-2c0b67c2-b7eb-4cb7-9290-090d4ade755e.png)
 ![image (2)](https://user-images.githubusercontent.com/118980125/213661001-0be4e69f-cb9a-4980-bcf7-b839841b69f6.png)
