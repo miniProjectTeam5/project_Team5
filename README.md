@@ -48,6 +48,6 @@
 
 
 
-## link
+## 🔗 link
 - notion) https://www.notion.so/MiniProject_Kiosk-8cd7c5bf6c7d499d91ffd4c4cf1dcf89
 
