@@ -40,4 +40,14 @@ public class OrderController {
         return orderService.dailySales(date);
     }
 
+    @GetMapping("/order/dailySales")
+    public Long showDailySales(@RequestBody DailySalesRequestDto date) {
+        return orderService.dailySales(date);
+    }
+
+    @GetMapping("/order/dailySales/details")
+    public List<Orders> showDailySalesDetails(@RequestBody DailySalesRequestDto date){
+        return orderService.showDailySalesDetails(date);
+    }
+
 }

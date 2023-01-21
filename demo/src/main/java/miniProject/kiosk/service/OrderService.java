@@ -171,4 +171,8 @@ public class OrderService {
         Long cnt = orderNumberRepository.countBy();
         return new OrderNumberRequestDto(cnt);
     }
+
+    public List<Orders> showDailySalesDetails(DailySalesRequestDto date) {
+        return orderRepository.findAllByCreatedAtContains(date.getDate());
+    }
 }
