@@ -1,9 +1,6 @@
 package miniProject.kiosk.service;
 
 import io.jsonwebtoken.Claims;
-import jakarta.persistence.criteria.Order;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,18 +9,11 @@ import miniProject.kiosk.dto.*;
 import miniProject.kiosk.dto.member.UpdatePointDto;
 import miniProject.kiosk.entity.*;
 import miniProject.kiosk.jwt.JwtUtil;
-import miniProject.kiosk.repository.MemberRepository;
-import miniProject.kiosk.repository.MenuRepository;
-import miniProject.kiosk.repository.OrderNumberRepository;
-import miniProject.kiosk.repository.OrderRepository;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
+import miniProject.kiosk.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +24,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MenuRepository menuRepository;
     private final OrderNumberRepository orderNumberRepository;
+    private final Beveragerepository beveragerepository;
+    private final FoodRepository foodRepository;
 
     public OrderResponseDto totalPayment(TokenAccessDto token, HttpServletResponse response) {
 
@@ -45,13 +37,6 @@ public class OrderService {
 
         if (token != null) {
             claims = jwtUtil.getUserInfoFromToken(tokens);
-//            if (jwtUtil.validateToken(token)) {
-//                // 토큰에서 사용자 정보 가져오기
-//
-//
-//            } else {
-//                throw new IllegalArgumentException("주문 신청에 오류가 있습니다.");
-//            }
 
             String time = (String) claims.get("time");
             log.info("시간정보입니다 " + time);
@@ -59,12 +44,20 @@ public class OrderService {
             List<Orders> targetOrders = orderRepository.findAllByCreatedAt(time);
             log.info(targetOrders.toString());
 
-            Integer sum = 0;
+            int sum = 0;
 
             for (Orders targetOrder : targetOrders) {
-                Menu targetMenu = targetOrder.getMenu();
-                Integer price = targetMenu.getPrice() * targetOrder.getAmount();
-                sum += price;
+                if (foodRepository.existsByFoodName(targetOrder.getMenuName())) {
+                    Food targetFood = foodRepository.findByFoodName(targetOrder.getMenuName());
+                    int price = targetFood.getPrice() * targetOrder.getAmount();
+                    sum += price;
+                }
+
+                if (beveragerepository.existsByBeverageName(targetOrder.getMenuName())) {
+                    Beverage targetBeverage = beveragerepository.findByBeverageName(targetOrder.getMenuName());
+                    int price = targetBeverage.getPrice() * targetOrder.getAmount();
+                    sum += price;
+                }
             }
             return new OrderResponseDto(sum);
         } else {
@@ -72,25 +65,41 @@ public class OrderService {
         }
     }
 
-    public TokenAccessDto saveOrder(List<Orders> ordersList, String phoneNumber, HttpServletResponse response) {
+    public TokenAccessDto saveOrder(List<Orders> ordersList, HttpServletResponse response) {
 
         int sum = 0;
 
         for (Orders orders : ordersList) {
-            Menu menu = menuRepository.findByMenuName(orders.getMenuName());
 
-            if (menu == null) {
-                throw new IllegalArgumentException("메뉴 정보를 찾을 수 없습니다");
+            if (foodRepository.existsByFoodName(orders.getMenuName())) {
+                Food orderFood = foodRepository.findByFoodName(orders.getMenuName());
+                Beverage beverage = new Beverage();
 
-            } else {
                 Orders orders1 = Orders.builder()
                         .menuName(orders.getMenuName())
                         .amount(orders.getAmount())
-                        .imageUrl(menu.getImageUrl())
-                        .menu(menu)
+                        .imageUrl(orderFood.getImageUrl())
+                        .food(orderFood)
+                        .beverage(beverage)
                         .build();
                 orderRepository.save(orders1);
-                sum += menu.getPrice();
+                sum += orderFood.getPrice();
+                log.info("가격확인" + sum);
+            }
+
+            if (beveragerepository.existsByBeverageName(orders.getMenuName())) {
+                Beverage orderBeverage = beveragerepository.findByBeverageName(orders.getMenuName());
+                Food food = new Food();
+
+                Orders orders1 = Orders.builder()
+                        .menuName(orders.getMenuName())
+                        .amount(orders.getAmount())
+                        .imageUrl(orderBeverage.getImageUrl())
+                        .food(food)
+                        .beverage(orderBeverage)
+                        .build();
+                orderRepository.save(orders1);
+                sum += orderBeverage.getPrice();
                 log.info("가격확인" + sum);
             }
         }
@@ -112,7 +121,6 @@ public class OrderService {
     @Transactional
     public StackPointResponseDto stackPoints(StackPointDto stackPointDto) {
 
-
         String tokens = stackPointDto.getToken().substring(7);
         Claims claims;
 
@@ -132,12 +140,20 @@ public class OrderService {
 
             List<Orders> targetOrders = orderRepository.findAllByCreatedAt(time);
 
-            Integer sum = 0;
+            int sum = 0;
 
             for (Orders targetOrder : targetOrders) {
-                Menu targetMenu = targetOrder.getMenu();
-                Integer price = targetMenu.getPrice() * targetOrder.getAmount();
-                sum += price;
+                if (foodRepository.existsByFoodName(targetOrder.getMenuName())) {
+                    Food targetFood = foodRepository.findByFoodName(targetOrder.getMenuName());
+                    int price = targetFood.getPrice() * targetOrder.getAmount();
+                    sum += price;
+                }
+
+                if (beveragerepository.existsByBeverageName(targetOrder.getMenuName())) {
+                    Beverage targetbeverage = beveragerepository.findByBeverageName(targetOrder.getMenuName());
+                    int price = targetbeverage.getPrice() * targetOrder.getAmount();
+                    sum += price;
+                }
             }
             log.info("sum = " + sum);
             double point = sum * ((double) 5 / 100);
@@ -153,20 +169,30 @@ public class OrderService {
     }
 
     @Transactional
-    public Long dailySales(DailySalesRequestDto date) {
+    public int dailySales(DailySalesRequestDto date) {
         List<Orders> orders = orderRepository.findAllByCreatedAtContains(date.getDate());
         log.info("date = " + date);
         log.info("orders = " + orders);
 
-        long sum = 0;
+        int sum = 0;
 
         for (Orders order : orders) {
-            sum += order.getMenu().getPrice() * (order.getAmount());
+            if (foodRepository.existsByFoodName(order.getMenuName())) {
+                Food targetFood = foodRepository.findByFoodName(order.getMenuName());
+                sum += targetFood.getPrice() * (order.getAmount());
+            }
+
+            if (beveragerepository.existsByBeverageName(order.getMenuName())) {
+                Beverage targetBeverage = beveragerepository.findByBeverageName(order.getMenuName());
+                sum += targetBeverage.getPrice() * order.getAmount();
+            }
+
         }
 
         return sum;
     }
 
+    //의도를 잘 모르겠음 뭔진 모르겠지만 나중엔 수정이 필요해보임
     public OrderNumberRequestDto cntOrder() {
         Long cnt = orderNumberRepository.countBy();
         return new OrderNumberRequestDto(cnt);
@@ -174,5 +200,23 @@ public class OrderService {
 
     public List<Orders> showDailySalesDetails(DailySalesRequestDto date) {
         return orderRepository.findAllByCreatedAtContains(date.getDate());
+    }
+
+    public Food findInFoodList (Orders orders) {
+        Food foodName = foodRepository.findByFoodName(orders.getMenuName());
+        if (foodName != null) {
+            return foodRepository.findByFoodName(orders.getMenuName());
+        } else {
+            throw new IllegalArgumentException("음식에 등록된 메뉴가 아닙니다");
+        }
+    }
+
+    public Beverage findInBeverageList (Orders orders) {
+        Beverage beverageName = beveragerepository.findByBeverageName(orders.getMenuName());
+        if (beverageName != null) {
+            return beveragerepository.findByBeverageName(orders.getMenuName());
+        } else {
+            throw new IllegalArgumentException("음료에 등록된 메뉴가 아닙니다.");
+        }
     }
 }

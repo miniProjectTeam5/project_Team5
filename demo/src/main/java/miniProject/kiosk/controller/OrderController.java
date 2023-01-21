@@ -21,8 +21,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order")
-    public TokenAccessDto saveOrder(@RequestBody List<Orders> ordersList, String phoneNumber, HttpServletResponse response) {
-        return orderService.saveOrder(ordersList, phoneNumber, response);
+    public TokenAccessDto saveOrder(@RequestBody List<Orders> ordersList, HttpServletResponse response) {
+        return orderService.saveOrder(ordersList, response);
     }
 
     @PostMapping("/order/bill")
@@ -36,17 +36,17 @@ public class OrderController {
     }
 
     @PostMapping("/order/dailySales")
-    public Long dailySales(@RequestBody DailySalesRequestDto date) {
+    public int dailySales(@RequestBody DailySalesRequestDto date) {
         return orderService.dailySales(date);
     }
 
     @GetMapping("/order/dailySales")
-    public Long showDailySales(@RequestBody DailySalesRequestDto date) {
+    public int showDailySales(@RequestBody DailySalesRequestDto date) {
         return orderService.dailySales(date);
     }
 
     @GetMapping("/order/dailySales/details")
-    public List<Orders> showDailySalesDetails(@RequestBody DailySalesRequestDto date){
+    public List<Orders> showDailySalesDetails(@RequestBody DailySalesRequestDto date) {
         return orderService.showDailySalesDetails(date);
     }
 
