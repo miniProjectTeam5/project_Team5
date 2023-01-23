@@ -28,7 +28,11 @@ public class Orders extends Timestamped {
     private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
+    @JoinColumn(name = "food_id")
+    private Food food;
+
+    @ManyToOne
+    @JoinColumn(name = "beverage_id")
+    private Beverage beverage;
 
 }

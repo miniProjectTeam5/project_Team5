@@ -12,18 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrderNumberDto {
 
-    Long orderId;
-    OrderNumber orderNumber;
-
-    Long waitingNumber; // 대기번호 추가
-
-//    public OrderNumberDto(OrderNumber orderId){
-//        return this.orderNumber;
-//    }
-
-    public OrderNumberDto(OrderNumber orderNumber){
-        return this.waitingNumber;
-    }
-
 
 }

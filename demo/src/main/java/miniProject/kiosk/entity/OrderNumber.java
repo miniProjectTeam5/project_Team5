@@ -1,13 +1,16 @@
 package miniProject.kiosk.entity;
 
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import miniProject.kiosk.dto.OrderNumberRequestDto;
+
+
+import java.util.List;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 public class OrderNumber extends Timestamped{
@@ -16,13 +19,10 @@ public class OrderNumber extends Timestamped{
     private Long id;
 
     @Column(nullable = false)
-    private List<Integer> waitingNum;
+    private Long orderCnt = 0L;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Long ordernum;
+    public OrderNumber(OrderNumberRequestDto orderNumberRequestDto) {
+        this.orderCnt = orderNumberRequestDto.getOrderCnt();
 
-
-
-
+    }
 }
